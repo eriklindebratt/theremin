@@ -101,7 +101,21 @@ var onFuffrTouch = function(touches) {
   }
 };
 
+// deplendency on https://github.com/kzokm/eyetribe-websocket
+var eye = function($debug){
+  EyeTribe.loop(function(frame) {
+    var pos = frame.average;
+    var volume = pos.y / window.screen.height - 1 ;
+    var frequency = pos.x / window.screen.width * settings.maxFrequency;
+    $debug.css('top', pos.y + 'px');
+    $debug.css('left', pos.x + 'px');
+    $debug.html(frequency + " <br> " + volume);
 
+    setVolume(volume);
+    setFrequency(frequency);
+
+  });
+};
 
 
 
@@ -122,9 +136,15 @@ var init = function() {
 $(function() {
   init();
 
-  fuffr.on.connected = onFuffrConnected;
-  fuffr.on.disconnected = onFuffrDisconnected;
-  fuffr.on.touchesBegan = onFuffrTouch;
-  fuffr.on.touchesMoved = onFuffrTouch;
-  fuffr.on.touchesEnded = onFuffrTouch;
+  if(true){
+    eye($('.debug'));
+
+  } else {
+    $('.debug').hide();
+    fuffr.on.connected = onFuffrConnected;
+    fuffr.on.disconnected = onFuffrDisconnected;
+    fuffr.on.touchesBegan = onFuffrTouch;
+    fuffr.on.touchesMoved = onFuffrTouch;
+    fuffr.on.touchesEnded = onFuffrTouch;
+  }
 });

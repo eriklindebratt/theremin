@@ -66,6 +66,13 @@ body {
   }
 }
 
+.debug{
+  position: absolute;
+  width : 10;
+  height : 10;
+  background-color: #f00;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
