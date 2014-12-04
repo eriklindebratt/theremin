@@ -101,7 +101,16 @@ var onFuffrTouch = function(touches) {
   }
 };
 
-
+var setupLeap = function() {
+  Leap.loop(function(frame) {
+    frame.hands.forEach(function(hand, index) {
+      var x = (hand.screenPosition()[0] - 250)/750;
+      var y = (hand.screenPosition()[1] - 50)/580;
+      setFrequency(settings.maxFrequency * x);
+      setVolume(-1 * (y + 0.2));
+    });
+  }).use('screenPosition', {scale: 0.25});
+};
 
 
 
@@ -117,6 +126,7 @@ var init = function() {
     });
 
   //setupFuffr();
+  setupLeap();
 };
 
 $(function() {
@@ -127,4 +137,7 @@ $(function() {
   fuffr.on.touchesBegan = onFuffrTouch;
   fuffr.on.touchesMoved = onFuffrTouch;
   fuffr.on.touchesEnded = onFuffrTouch;
+
+  // This allows us to move the cat even whilst in an iFrame.
+  Leap.loopController.setBackground(true)
 });
